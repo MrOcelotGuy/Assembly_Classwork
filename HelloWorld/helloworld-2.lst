@@ -1,0 +1,36 @@
+ARM GAS  helloworld-2.s 			page 1
+
+
+   1              	.data
+   2 0000 01000000 	tempLocation:	.WORD 1
+   3 0004 48656C6C 	helloString:	.ASCIZ "Hello World!"
+   3      6F20576F 
+   3      726C6421 
+   3      00
+   4 0011 0A206E61 	nameString:		.ASCIZ "\n name and class redacted for github"
+   4      6D652061 
+   4      6E642063 
+   4      6C617373 
+   4      20726564 
+   5              	
+   6              	.TEXT
+   7              	.GLOBAL main
+   8              	
+   9              	main:
+  10 0000 20C09FE5 		LDR	R12, = tempLocation
+  11 0004 00E08CE5 		STR	LR, [R12]	
+  12              		
+  13 0008 1C009FE5 		LDR	R0, =helloString
+  14 000c FEFFFFEB 		BL	printf
+  15              		
+  16 0010 18009FE5 		LDR R0,	=nameString
+  17 0014 FEFFFFEB 		BL printf
+  18              		
+  19 0018 08C09FE5 		LDR	R12, =tempLocation
+  20 001c 00E09CE5 		LDR	LR, [R12]
+  21              		
+  22 0020 0B00A0E3 		MOV	R0, #11
+  23 0024 1EFF2FE1 		BX	LR
+  23      00000000 
+  23      04000000 
+  23      11000000 

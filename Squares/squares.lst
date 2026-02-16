@@ -1,0 +1,94 @@
+ARM GAS  squares.s 			page 1
+
+
+   1              	@Ocelot Guy hw wowie
+   2              	/*
+   3              	Program Description:
+   4              	
+   5              	This program goes through numbers 0-99 and prints out their squares
+   6              	using a do-while loop so that only 1 branch is used.
+   7              	*/
+   8              	
+   9              	.data
+  10 0000 01000000 	tempR4:		.word 1
+  11 0004 01000000 	tempLR:		.word 1
+  12              	
+  13 0008 72656461 	copyright:	.ASCIZ "redacted for github\n"
+  13      63746564 
+  13      20666F72 
+  13      20676974 
+  13      6875620A 
+  14 001d 4E756D62 	headStr:	.ASCIZ "Number\t Square\n"
+  14      65720920 
+  14      53717561 
+  14      72650A00 
+  15              	@Format so that R1 appears first, then there's a tab, then R2 appears last and a new line
+  16 002d 25640920 	printStr:	.ASCIZ "%d\t %d\n"
+  16      25640A00 
+  17              	
+  18              	.TEXT
+  19              	.GLOBAL main 
+  20              	
+  21              	main:
+  22              		@saving R4 register since I need a persistent counter
+  23 0000 54C09FE5 		LDR R12, =tempR4
+  24 0004 00408CE5 		STR R4,	[ R12 ]
+  25              		
+  26              		@saving LR register since I used BL
+  27 0008 50C09FE5 		LDR R12, =tempLR
+  28 000c 00E08CE5 		STR	LR,	 [ R12 ]
+  29              		
+  30              		@print out copyright almost forgot
+  31 0010 4C009FE5 		LDR R0, =copyright
+  32 0014 FEFFFFEB 		BL printf
+  33              		
+  34              		@print out the head thingy
+  35 0018 48009FE5 		LDR R0, =headStr
+  36 001c FEFFFFEB 		BL printf
+  37              		
+  38              		@give r4 the starting value of 0 so I can have my strings until 99
+  39 0020 0040A0E3 		MOV R4, #0
+  40              		
+  41              		@The do while loop
+  42              		Loop:
+  43              		
+  44              			@Input the number into the string
+  45 0024 0410A0E1 			MOV R1, R4
+  46              		
+  47              			@Input the square into the string and square it
+  48 0028 0420A0E1 			MOV R2, R4
+  49 002c 940402E0 			MUL R2, R4, R4
+ARM GAS  squares.s 			page 2
+
+
+  50              			
+  51              			@Load the format string into R0 and then print it
+  52              			
+  53 0030 34009FE5 			LDR R0, =printStr
+  54 0034 FEFFFFEB 			BL printf
+  55              			
+  56              			@BL should reset R0-R2 values
+  57              			
+  58              			@Add 1 to the value of R4 for the counter
+  59 0038 014084E2 			ADD R4, R4, #1
+  60              			
+  61              			//Make sure that R4 is less than 100
+  62 003c 640054E3 			CMP R4,	#100
+  63 0040 F7FFFF1A 			BNE Loop
+  64              		
+  65              		Exit:
+  66              		
+  67              		@restoring registers
+  68 0044 10C09FE5 		LDR	R12, =tempR4
+  69 0048 00409CE5 		LDR R4,	[ R12 ]
+  70 004c 0CC09FE5 		LDR R12, =tempLR
+  71 0050 00E09CE5 		LDR LR,	[ R12 ]
+  72              		
+  73              		@exit the program
+  74 0054 0000A0E3 		MOV   R0, #0  
+  75 0058 1EFF2FE1 	    BX    LR
+  76 005c 00000000 		
+  76      04000000 
+  76      08000000 
+  76      1D000000 
+  76      2D000000 
